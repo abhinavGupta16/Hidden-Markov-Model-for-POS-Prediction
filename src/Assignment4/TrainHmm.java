@@ -12,7 +12,7 @@ public class TrainHmm {
         Map<String,Integer> wordIndexMap = new LinkedHashMap<>();
         stateIndexMap.put(START, 1);
         stateIndexMap.put(END, 2);
-        File file = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\WSJ_02-21.pos");
+        File file = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_02-21.pos");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
         String[] temp;
@@ -81,8 +81,8 @@ public class TrainHmm {
 //        print2DArray(wordState, wordIndexMap, stateIndexMap);
 //        System.out.println("stateState");
 //        print2DArray(stateState, stateIndexMap, stateIndexMap);
-        File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\WSJ_24.pos");
-        File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\test_generate.pos");
+        File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.pos");
+        File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos");
         processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos);
     }
 

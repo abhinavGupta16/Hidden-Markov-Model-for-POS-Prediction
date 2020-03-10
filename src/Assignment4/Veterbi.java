@@ -39,8 +39,8 @@ public class Veterbi {
                 {0.0,0.0,0.0,0.8,0.5},
                 {0.0,0.0,0.0,0.2,0.5}};
 
-        File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\test.words");
-        File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\test_generate.pos");
+        File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test.words");
+        File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos");
         TrainHmm.processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos);
     }
 
