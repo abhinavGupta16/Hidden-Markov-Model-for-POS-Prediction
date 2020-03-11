@@ -84,6 +84,11 @@ public class TrainHmm {
         File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.words");
         File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos");
         processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos, stateMax);
+
+        System.out.println("Score");
+        Score.main(new String[]{"D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.pos", filePos.getPath()});
+        System.out.println("\nScore Custom");
+        ScoreCustom.main(new String[]{"D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.pos", filePos.getPath()});
     }
 
     public static void processFile(double[][] stateState, double[][] wordState, Map<String,Integer> stateIndexMap,
@@ -107,7 +112,6 @@ public class TrainHmm {
             }
         }
         brw.close();
-        Score.main(new String[]{"D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.pos", "D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos"});
     }
 
     public static void calculateProbabilityState(double[][] stateState){
