@@ -81,25 +81,25 @@ public class TrainHmm {
 //        print2DArray(wordState, wordIndexMap, stateIndexMap);
 //        System.out.println("stateState");
 //        print2DArray(stateState, stateIndexMap, stateIndexMap);
-        File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.pos");
+        File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.words");
         File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos");
-        processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos);
+        processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos, stateMax);
     }
 
     public static void processFile(double[][] stateState, double[][] wordState, Map<String,Integer> stateIndexMap,
-                                   Map<String,Integer> wordIndexMap, File file, File filePos) throws Exception{
+                                   Map<String,Integer> wordIndexMap, File fileKey, File filePos, double[] stateMax) throws Exception{
 
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        BufferedReader br = new BufferedReader(new FileReader(fileKey));
         BufferedWriter brw = new BufferedWriter(new FileWriter(filePos));
         String line;
         List<String> obs = new LinkedList<>();
         while ((line = br.readLine()) != null) {
             if (!line.trim().equals("")) {
-                obs.add(line.split("\t")[0]);
+                obs.add(line);
             } else {
                 String[] obsArr = obs.stream().toArray(String[] ::new);
                 obs = new LinkedList<>();
-                String[] tags = Veterbi.viterbi(stateState, wordState, stateIndexMap, wordIndexMap, obsArr);
+                String[] tags = Veterbi.viterbi(stateState, wordState, stateIndexMap, wordIndexMap, obsArr, stateMax);
                 for(int i = 0; i < tags.length; i++){
                     brw.write(obsArr[i] + "\t" + tags[i] + "\n");
                 }
@@ -107,7 +107,7 @@ public class TrainHmm {
             }
         }
         brw.close();
-//        .split("\t")[0]
+        Score.main(new String[]{"D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.pos", "D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos"});
     }
 
     public static void calculateProbabilityState(double[][] stateState){
@@ -123,9 +123,9 @@ public class TrainHmm {
             int stateIndex = entry.getValue();
             for(int i = 0; i < wordState.length; i++){
                 wordState[i][stateIndex] = wordState[i][stateIndex]/stateState[stateIndex][0];
-                if(stateMax[stateIndex] < wordState[i][stateIndex]){
-                    stateMax[stateIndex] = wordState[i][stateIndex];
-                }
+            }
+            if(stateMax[stateIndex] < wordState[stateIndex][stateIndex]){
+                stateMax[stateIndex] = wordState[stateIndex][stateIndex];
             }
         }
     }

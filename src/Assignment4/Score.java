@@ -28,9 +28,15 @@ public class Score {
         File responseFile = new File(responseFileName);
         List<String> response = Files.readAllLines(responseFile.toPath(), StandardCharsets.UTF_8);
         if (key.size() != response.size()) {
-            System.err.println ("length mismatch between key and submitted file");
+            for(String responseTag: response){
+                if(!key.contains(responseTag)){
+                    System.out.println(responseTag);
+                }
+            }
+            System.err.println ("length mismatch between key "+ key.size()+ " and submitted file " + response.size());
             System.exit(1);
         }
+        System.out.println("length mismatch between key "+ key.size()+ " and submitted file " + response.size());
         int correct = 0;
         int incorrect = 0;
         for (int i = 0; i < key.size(); i++) {

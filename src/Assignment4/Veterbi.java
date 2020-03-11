@@ -39,12 +39,14 @@ public class Veterbi {
                 {0.0,0.0,0.0,0.8,0.5},
                 {0.0,0.0,0.0,0.2,0.5}};
 
+        double[] stateMax = new double[]{0.0,0.0,0.0,0.8,0.5};
+
         File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test.words");
         File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos");
-        TrainHmm.processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos);
+        TrainHmm.processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos, stateMax);
     }
 
-    public static String[] viterbi(double[][] stateState, double[][] wordState, Map<String,Integer> stateIndexMap, Map<String,Integer> wordIndexMap, String[] obs){
+    public static String[] viterbi(double[][] stateState, double[][] wordState, Map<String,Integer> stateIndexMap, Map<String,Integer> wordIndexMap, String[] obs, double[] stateMax){
         Pair[][] v = new Pair[stateState.length][obs.length+2];
         for(int i = 0; i<v.length; i++){
             for(int j = 0; j < v[0].length;j++){
@@ -61,7 +63,7 @@ public class Veterbi {
                 for(int prevStateIndex = 1; prevStateIndex < stateState[0].length; prevStateIndex++){
                     double wordProb;
                     if(!wordIndexMap.containsKey(word)){
-                        wordProb = 0.5; //wordNotFound(wordState, stateIndex);
+                        wordProb = wordNotFoundState(stateState, stateIndex, word);//stateMax[stateIndex]; //wordNotFound(wordState, stateIndex);
                     } else {
                         wordProb = wordState[wordIndexMap.get(word)][stateIndex];
                     }
@@ -108,6 +110,11 @@ public class Veterbi {
             }
             current = v[current.prev][n];
         }
+        for(int i = 0; i < obs.length;i++){
+            if(!wordIndexMap.containsKey(obs[i]) && Character.isUpperCase(obs[i].charAt(0))){
+                tags[i] = "NNP";
+            }
+        }
 //        System.out.println(Arrays.toString(tags));
         return tags;
     }
@@ -117,6 +124,16 @@ public class Veterbi {
         for(int wordIndex = 0; wordIndex<wordState.length; wordIndex++){
             if(wordState[wordIndex][stateIndex] > maxProb){
                 maxProb = wordState[wordIndex][stateIndex];
+            }
+        }
+        return maxProb;
+    }
+
+    public static double wordNotFoundState(double[][] stateState, int stateIndexFrom, String word){
+        double maxProb = -1.0;
+        for(int stateIndexTo = 0; stateIndexTo<stateState[0].length; stateIndexTo++){
+            if(stateState[stateIndexFrom][stateIndexTo] > maxProb){
+                maxProb = stateState[stateIndexFrom][stateIndexTo];
             }
         }
         return maxProb;
