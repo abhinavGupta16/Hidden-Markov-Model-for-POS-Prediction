@@ -721,7 +721,6 @@ go VBP VB
 away RB RP
 in IN RP
 @ IN SYM
-purchased VBD VBN
 common NN JJ
 reported VBN VBD
 offers VBZ NNS
@@ -763,9 +762,8 @@ arise VB VBP
 that IN WDT
 trainers NNS NN
 trainers NNS NN
-T-37 NN CD
-trainers NNS VBZ
-MB-339 NNP CD
+T-37 NN NNP
+T34C CD NNP
 tandem-trainer NN ,
 order VB NN
 Striking JJ VBG
@@ -939,7 +937,6 @@ monitored VBD VBN
 ordered VBD VBN
 focused VBD VBN
 that IN DT
-F-16 NNP CD
 Fighting NNP NN
 U.S.based JJ NNP
 Dynamics NNP NNPS
@@ -1008,12 +1005,16 @@ out IN RP
 steel-import JJ NNP
 ailing VBG JJ
 Markets NNS NNP
+industrials NNS VBZ
+off IN RB
+off IN RB
 off IN RB
 up IN RB
 up IN RB
 up IN RB
 Dollar NN NNP
 yen NN NNS
+off IN RB
 off IN RB
 concurrently RB VBP
 revealed VBD VBN

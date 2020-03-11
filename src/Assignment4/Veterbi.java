@@ -3,8 +3,7 @@ package Assignment4;
 import java.io.File;
 import java.util.*;
 
-import static Assignment4.TrainHmm.START;
-import static Assignment4.TrainHmm.END;
+import static Assignment4.TrainHmm.*;
 
 class Pair{
     double value;
@@ -56,7 +55,7 @@ public class Veterbi {
 
         v[1][0].value = 1;
         for(int wordIndex = 1; wordIndex <= obs.length; wordIndex++){
-            String word = obs[wordIndex-1];
+            String word = getWord(obs[wordIndex-1]);
             for(int stateIndex = 1; stateIndex < stateState[0].length; stateIndex++){
                 double maxProb = -1;
                 Integer maxStateIndex = -1;
@@ -116,14 +115,15 @@ public class Veterbi {
     }
 
     public static void handleSpecialWords(String[] obs, String[] tags, Map<String, Integer> wordIndexMap){
-        String pattern = "([a-zA-Z]*)?(\\-?)[-+]?[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
-        if(obs[0].matches(pattern)){
-            tags[0] ="CD";
-        }
+//        String pattern = "([a-zA-Z]*)?(\\-?)[-+]?[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
+//        if(obs[0].matches(pattern)){
+//            tags[0] ="CD";
+//        }
         for(int i = 1; i < obs.length;i++){
-            if(obs[i].matches(pattern)){
-                tags[i] ="CD"; // String with numbers, comma separated or . separated are most likely CD
-            } else if(!wordIndexMap.containsKey(obs[i]) && Character.isUpperCase(obs[i].charAt(0))){
+//            if(obs[i].matches(pattern)){
+//                tags[i] ="CD"; // String with numbers, comma separated or . separated are most likely CD
+//            } else
+                if(!wordIndexMap.containsKey(obs[i]) && Character.isUpperCase(obs[i].charAt(0))){
                 tags[i] = "NNP"; // Unknown word starting with Capital Letter is most likely a Proper Noun
             }
         }
@@ -141,16 +141,16 @@ public class Veterbi {
 
     public static double wordNotFoundState(double[][] stateState, int stateIndexFrom, String word, Map<String,Integer> stateIndexMap){
         double maxProb = -1.0;
-        String pattern = "([a-zA-Z]*)?(\\-?)[-+]?[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
-        if(word.matches(pattern) && stateIndexFrom == stateIndexMap.get("CD") && stateIndexFrom != 1) {
-            maxProb = 1;
-        } else {
+//        String pattern = "([a-zA-Z]*)?(\\-?)[-+]?[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
+//        if(word.matches(pattern) && stateIndexFrom == stateIndexMap.get("CD") && stateIndexFrom != 1) {
+//            maxProb = 1;
+//        } else {
             for (int stateIndexTo = 0; stateIndexTo < stateState[0].length; stateIndexTo++) {
                 if (stateState[stateIndexFrom][stateIndexTo] > maxProb) {
                     maxProb = stateState[stateIndexFrom][stateIndexTo];
                 }
             }
-        }
+//        }
         return maxProb;
     }
 }

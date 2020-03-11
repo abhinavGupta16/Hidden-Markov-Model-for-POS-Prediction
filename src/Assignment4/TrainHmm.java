@@ -6,7 +6,9 @@ import java.util.*;
 public class TrainHmm {
     public static String START = "Start";
     public static String END = "End";
-    
+    public static String NUMBERWORD = "NUMBERWORD999";
+    public static String NUMBERWORDHYPHEN = "NUMBERWORD999-";
+
     public static void main(String[] args) throws Exception{
         Map<String,Integer> stateIndexMap = new LinkedHashMap<>();
         Map<String,Integer> wordIndexMap = new LinkedHashMap<>();
@@ -21,7 +23,7 @@ public class TrainHmm {
         while ((line = br.readLine()) != null) {
             if (!line.trim().equals("")) {
                 temp = line.split("\t");
-                String word = temp[0];
+                String word = getWord(temp[0]);
                 String tag = temp[1];
                 if(!wordIndexMap.containsKey(word)){
                     wordIndexMap.put(word, wordIndex++);
@@ -44,7 +46,7 @@ public class TrainHmm {
         while ((line = br.readLine()) != null) {
             if (!line.trim().equals("")) {
                 temp = line.split("\t");
-                String word = temp[0];
+                String word = getWord(temp[0]);
                 String tag = temp[1];
                 if(wordIndexMap.containsKey(word)){
                     wordIndex = wordIndexMap.get(word);
@@ -149,6 +151,18 @@ public class TrainHmm {
             }
         }
         return null;
+    }
+
+    public static String getWord(String word){
+        String pattern = "([a-zA-Z]*)?(\\-?)[-+]?[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
+        String pattern2 = "([a-zA-Z]*)(\\-)[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*(\\-)?([a-zA-Z])*";
+        if(word.matches(pattern)){
+            return NUMBERWORD;
+        } else if (word.matches(pattern2)){
+            return NUMBERWORDHYPHEN;
+        } else {
+            return word;
+        }
     }
 }
 

@@ -14654,7 +14654,7 @@ of	IN
 Unitil	NNP
 Corp.	NNP
 ,	,
-purchased	VBN
+purchased	VBD
 34,602	CD
 shares	NNS
 ,	,
@@ -15717,7 +15717,7 @@ aircraft	NN
 would	MD
 replace	VB
 the	DT
-T-37	CD
+T-37	NNP
 ,	,
 made	VBN
 by	IN
@@ -15758,8 +15758,8 @@ aircraft	NN
 to	TO
 replace	VB
 its	PRP$
-T34C	CD
-trainers	VBZ
+T34C	NNP
+trainers	NNS
 made	VBN
 by	IN
 the	DT
@@ -15786,7 +15786,7 @@ to	TO
 build	VB
 the	DT
 Aermacchi	NNP
-MB-339	CD
+MB-339	NNP
 jet	NN
 tandem-trainer	,
 and	CC
@@ -19886,7 +19886,7 @@ OKing	NNP
 the	DT
 purchase	NN
 of	IN
-F-16	CD
+F-16	NNP
 Fighting	NN
 Falcon	NNP
 and	CC
@@ -21122,7 +21122,7 @@ shares	NNS
 
 Dow	NNP
 Jones	NNP
-industrials	NNS
+industrials	VBZ
 2569.26	CD
 ,	,
 off	RB
@@ -21131,13 +21131,13 @@ off	RB
 transportation	NN
 1406.29	CD
 ,	,
-off	IN
+off	RB
 78.06	CD
 ;	:
 utilities	NNS
 211.96	CD
 ,	,
-off	IN
+off	RB
 7.29	CD
 .	.
 
@@ -21182,7 +21182,7 @@ off	RB
 1.8740	CD
 marks	NNS
 ,	,
-off	IN
+off	RB
 0.0343	CD
 .	.
 
