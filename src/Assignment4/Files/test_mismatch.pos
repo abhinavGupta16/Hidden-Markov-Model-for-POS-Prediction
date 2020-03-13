@@ -225,9 +225,7 @@ up RB RP
 Hungarian NNP JJ
 Radio NNP NN
 influencing VBG IN
-40-minute JJ NN
 called VBN VBD
-35-minute JJ NN
 called VBN VBD
 The NNP DT
 tidbits NNS NN
@@ -274,7 +272,7 @@ librarians NNS NN
 voucher NN CD
 Mind VB ``
 unskilled JJ $
-18-year-olds NNS VB
+18-year-olds NNS JJ
 saving VBG NN
 better RB RBR
 developed VBD VBN
@@ -401,19 +399,16 @@ think VB VBP
 about IN RB
 starting VBG JJ
 1 LS CD
-2 LS CD
 Service NN NNP
 worth JJ IN
 amount VBP NN
 call VB NN
 that DT IN
-3 LS CD
 Encouragement NN NNP
 compulsion NN PRP
 Compelled VBN DT
 unenforceable JJ NN
 refusers NNS NN
-4 LS CD
 fought VBN VBD
 tutored VBN RB
 existing VBG JJ
@@ -424,7 +419,6 @@ that DT IN
 Evaluations NNS PRP
 so IN RB
 challengeable JJ RB
-5 LS CD
 Underclass NNS JJ
 Are VBP NNP
 middle-class JJ NN
@@ -564,9 +558,6 @@ involved VBD VBN
 overarching VBG JJ
 cross-market JJ NN
 pauses NNS VBZ
-2:07 CD DT
-2:30 CD DT
-2:45 CD DT
 trading NN VBG
 forced VBD VBN
 frozen VBN JJ
@@ -655,7 +646,6 @@ priests NNS NNP
 patriarchate NN NNP
 15th-century JJ NN
 crowned VBN CD
-34-foot-tall JJ NN
 such JJ PDT
 need VBP VB
 all DT RB
@@ -737,7 +727,6 @@ combined VBN JJ
 said VBN VBD
 Laboratories NNPS NNP
 Sports NNPS NNP
-10-store JJ NNP
 Sports NNPS NNP
 Sports NNPS NNP
 Sports NNPS NNP
@@ -788,7 +777,6 @@ highest-quality NN JJ
 pervaded VBD ,
 sold VBD VBN
 ago IN RB
-7-11 CD DT
 less RBR JJR
 department-store JJ NN
 up IN RP
@@ -879,7 +867,6 @@ Congratulations UH NNP
 remember VB VBP
 out IN RP
 thankfully RB NNP
-1987-style JJ DT
 selling VBG NN
 binges NNS NN
 lags NNS VBZ
@@ -955,6 +942,7 @@ First RB NNP
 ousting VBG DT
 thwarting VBG IN
 left JJ NN
+enticed VBD VBZ
 Next JJ NNP
 well-respected JJ NNP
 heads VBZ NNS
@@ -1045,10 +1033,10 @@ HOUSTON-CALGARY NNP DT
 energy-industry NN JJ
 together RB RP
 conduct VB NN
-585-lawyer NN DT
+585-lawyer NN JJ
 natural-gas NN JJ
 out IN RP
-80-lawyer NN NNP
+80-lawyer NN JJ
 WHAT WP WDT
 MAY MD NNP
 SIGNAL VB NNP
@@ -1059,7 +1047,7 @@ fireproofing VBG NN
 COUNSEL NN NNP
 JOINS VBZ NNP
 FIRM NN NNP
-500-lawyer NN DT
+500-lawyer NN JJ
 mass-media NNS JJ
 Communications NNP NNPS
 Airlines NNP NNPS
@@ -1163,6 +1151,7 @@ money-management NN JJ
 deteriorating VBG JJ
 Trading NN NNP
 Investment NN NNP
+120-a-share JJ CD
 traded VBD VBN
 Late JJ NNP
 as RB IN
@@ -1283,6 +1272,7 @@ reduced VBD VBN
 sales JJ NNS
 marine-related JJ CD
 fourth-quarter NN JJ
+interceded VBD VBZ
 anti-racketeering JJ NN
 Savings NNP NNPS
 Common NNP JJ

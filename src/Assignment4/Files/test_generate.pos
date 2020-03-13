@@ -4476,7 +4476,7 @@ service	NN
 has	VBZ
 a	DT
 daily	JJ
-40-minute	NN
+40-minute	JJ
 news	NN
 show	NN
 called	VBD
@@ -4524,7 +4524,7 @@ politics	NNS
 
 A	DT
 daily	JJ
-35-minute	NN
+35-minute	JJ
 program	NN
 called	VBD
 ``	``
@@ -5168,7 +5168,7 @@ unskilled	$
 17	CD
 -	:
 to	TO
-18-year-olds	VB
+18-year-olds	JJ
 ,	,
 some	DT
 not	RB
@@ -7065,7 +7065,7 @@ crucial	JJ
 ways	NNS
 .	.
 
-2	CD
+2	LS
 .	.
 ``	``
 Service	NNP
@@ -7184,7 +7184,7 @@ that	IN
 service	NN
 ?	.
 
-3	CD
+3	LS
 .	.
 Encouragement	NNP
 is	VBZ
@@ -7296,7 +7296,7 @@ need	VBP
 doing	VBG
 .	.
 
-4	CD
+4	LS
 .	.
 Good	JJ
 programs	NNS
@@ -7469,7 +7469,7 @@ are	VBP
 challengeable	RB
 .	.
 
-5	CD
+5	LS
 .	.
 Underclass	JJ
 youth	NN
@@ -11326,15 +11326,15 @@ Those	DT
 pauses	VBZ
 --	:
 from	IN
-2:07	DT
+2:07	CD
 p.m.	NN
 to	TO
-2:30	DT
+2:30	CD
 p.m.	NN
 CDT	NNP
 and	CC
 from	IN
-2:45	DT
+2:45	CD
 p.m.	NN
 until	IN
 the	DT
@@ -13255,7 +13255,7 @@ crowned	CD
 .	.
 
 A	DT
-34-foot-tall	NN
+34-foot-tall	JJ
 ,	,
 $	$
 7.7	CD
@@ -15061,7 +15061,7 @@ the	DT
 operator	NN
 of	IN
 the	DT
-10-store	NNP
+10-store	JJ
 Sports	NNP
 Unlimited	NNP
 chain	NN
@@ -16341,7 +16341,7 @@ the	DT
 nationwide	JJ
 chain	NN
 of	IN
-7-11	DT
+7-11	CD
 convenience	NN
 stores	NNS
 that	WDT
@@ -18890,7 +18890,7 @@ dollar	NN
 is	VBZ
 not	RB
 under	IN
-1987-style	DT
+1987-style	JJ
 pressure	NN
 .	.
 
@@ -20070,7 +20070,7 @@ the	DT
 left	NN
 ,	,
 he	PRP
-enticed	VBD
+enticed	VBZ
 some	DT
 smaller	JJR
 leftist	JJ
@@ -22116,7 +22116,7 @@ Gibson	NNP
 Gayle	NNP
 Jr.	NNP
 of	IN
-585-lawyer	DT
+585-lawyer	JJ
 Fulbright	NNP
 &	CC
 Jaworski	NNP
@@ -22171,7 +22171,7 @@ negotiations	NNS
 grew	VBD
 out	RP
 of	IN
-80-lawyer	NNP
+80-lawyer	JJ
 Fenerty	NNP
 Robertson	NNP
 's	POS
@@ -22349,7 +22349,7 @@ S.	NNP
 Killory	NNP
 will	MD
 join	VB
-500-lawyer	DT
+500-lawyer	JJ
 Morrison	NNP
 &	CC
 Foerster	NNP
@@ -25285,7 +25285,7 @@ target	NN
 of	IN
 a	DT
 $	$
-120-a-share	JJ
+120-a-share	CD
 takeover	NN
 proposal	NN
 from	IN
@@ -27947,7 +27947,7 @@ five	CD
 U.S.	NNP
 senators	NNS
 who	WP
-interceded	VBD
+interceded	VBZ
 with	IN
 thrift-industry	NN
 regulators	NNS

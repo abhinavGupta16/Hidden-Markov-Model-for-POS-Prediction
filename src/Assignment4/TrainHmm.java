@@ -6,8 +6,16 @@ import java.util.*;
 public class TrainHmm {
     public static String START = "Start";
     public static String END = "End";
-    public static String NUMBERWORD = "NUMBERWORD999";
-    public static String NUMBERWORDHYPHEN = "NUMBERWORD999-";
+    public static String NUMBER_WORD = "NUMBERWORD999";
+    public static String NUMBER_WORD_HYPHEN = "NUMBERWORD999-";
+    public static String SINGLE_NUMBER_MARKER = "NUMBERSINGLEWORD";
+    public static String NUMBER_HYPEN_WORD = "NUMBERHYPENWORD";
+    public static String EDWORDS = "WORD999ED";
+    public static String SINGLE_NUMBER_MARKER_PATTERN = "[0-9]";
+    public static String NUMBER_WORD_PATTERN = "([a-zA-Z]*)?(\\-?)[-+]?[0-9](\\:?)(\\-?)[0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
+    public static String NUMBER_HYPEN_WORD_PATTERN = "[0-9]*(\\-)[a-zA-Z]([a-zA-Z]*(\\-)*[a-zA-Z]*)*";
+    public static String NUMBER_WORD_HYPHEN_PATTERN = "([a-zA-Z]*)(\\-)[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*(\\-)?([a-zA-Z])*";
+    public static String ED_WORD_PATTERN = ".*ed";
 
     public static void main(String[] args) throws Exception{
         Map<String,Integer> stateIndexMap = new LinkedHashMap<>();
@@ -153,16 +161,17 @@ public class TrainHmm {
         return null;
     }
 
-    public static String getWord(String word){
-        String pattern = "([a-zA-Z]*)?(\\-?)[-+]?[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
-        String pattern2 = "([a-zA-Z]*)(\\-)[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*(\\-)?([a-zA-Z])*";
-        if(word.matches(pattern)){
-            return NUMBERWORD;
-        } else if (word.matches(pattern2)){
-            return NUMBERWORDHYPHEN;
-        } else {
-            return word;
+    public static String getWord(String word) {
+        if (word.matches(SINGLE_NUMBER_MARKER_PATTERN)){
+            return SINGLE_NUMBER_MARKER;
+        } else if(word.matches(NUMBER_WORD_PATTERN)){
+            return NUMBER_WORD;
+        } else if (word.matches(NUMBER_HYPEN_WORD_PATTERN)){
+            return NUMBER_HYPEN_WORD;
+        } else if (word.matches(NUMBER_WORD_HYPHEN_PATTERN)){
+            return NUMBER_WORD_HYPHEN;
         }
+        return word;
     }
 }
 
