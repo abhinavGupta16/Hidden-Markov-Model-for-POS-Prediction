@@ -1,7 +1,5 @@
 package Assignment4;
 
-import Assignment4.Files.Patterns;
-
 import java.io.File;
 import java.util.*;
 

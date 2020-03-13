@@ -1,7 +1,5 @@
 package Assignment4;
 
-import Assignment4.Files.Patterns;
-
 import java.io.*;
 import java.util.*;
 
@@ -40,7 +38,7 @@ public class TrainHmm {
 
     public static void main(String[] args) throws Exception{
         TrainHmm trainHmm = new TrainHmm();
-        File file = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_02-21.pos");
+        File file = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\train.pos");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
         String[] temp;
