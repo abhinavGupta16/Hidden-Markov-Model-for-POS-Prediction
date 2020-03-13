@@ -1,5 +1,7 @@
 package Assignment4;
 
+import Assignment4.Files.Patterns;
+
 import java.io.File;
 import java.util.*;
 
@@ -116,20 +118,9 @@ public class Veterbi {
     }
 
     public static void handleSpecialWords(String[] obs, String[] tags, TrainHmm trainHmm){
-//        String pattern = "([a-zA-Z]*)?(\\-?)[-+]?[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
-//        if(obs[0].matches(pattern)){
-//            tags[0] ="CD";
-//        }
         for(int i = 1; i < obs.length;i++){
-//            if(obs[i].matches(pattern)){
-//                tags[i] ="CD"; // String with numbers, comma separated or . separated are most likely CD
-//            } else
                 if(!trainHmm.wordIndexMap.containsKey(obs[i]) && Character.isUpperCase(obs[i].charAt(0))){
-//                    if(obs[i].charAt(obs[i].length()-1) == 's'){
-//                        tags[i] = "NNPS";
-//                    } else {
                         tags[i] = "NNP"; // Unknown word starting with Capital Letter is most likely a Proper Noun
-//                    }
                 } else if((!obs[i].equals(",") && tags[i]==",") || (!obs[i].equals("(") && tags[i]=="(")
                         || (!obs[i].equals(")") && tags[i]==")") || (!obs[i].equals("\'\'") && tags[i]=="\'\'")){
                     int stateIndexFrom = trainHmm.stateIndexMap.get(tags[i-1]);
@@ -156,21 +147,20 @@ public class Veterbi {
 
     public static double wordNotFoundState(TrainHmm trainHmm, int stateIndexFrom, int stateIndex, String word){
         double maxProb = -1.0;
-
-//        if(word.matches(NUMBER_WORD_PATTERN)) {
-//            maxProb = wordState[wordIndexMap.get(NUMBER_WORD)][stateIndex];
-//        } else if(word.matches(NUMBER_WORD_HYPHEN_PATTERN)) {
-//            maxProb = wordState[wordIndexMap.get(NUMBER_WORD_HYPHEN)][stateIndex];
-//        } else
-            if(word.matches(ED_WORD_PATTERN) && stateIndex == trainHmm.stateIndexMap.get("VBD")) {
-                maxProb = 1;
-            } else {
-                for (int stateIndexTo = 0; stateIndexTo < trainHmm.stateState[0].length; stateIndexTo++) {
-                    if (trainHmm.stateState[stateIndexFrom][stateIndexTo] > maxProb) {
-                        maxProb = trainHmm.stateState[stateIndexFrom][stateIndexTo];
-                    }
+        int suffixIndex = trainHmm.suffixIndexMap.get(Patterns.getPrefix(word));
+        if(suffixIndex!=trainHmm.suffixIndexMap.get(".*")){
+            for (int stateIndexTo = 0; stateIndexTo < trainHmm.suffixState[0].length; stateIndexTo++) {
+                if (trainHmm.suffixState[suffixIndex][stateIndexTo] > maxProb) {
+                    maxProb = trainHmm.suffixState[suffixIndex][stateIndexTo];
                 }
             }
+        } else {
+            for (int stateIndexTo = 0; stateIndexTo < trainHmm.stateState[0].length; stateIndexTo++) {
+                if (trainHmm.stateState[stateIndexFrom][stateIndexTo] > maxProb) {
+                    maxProb = trainHmm.stateState[stateIndexFrom][stateIndexTo];
+                }
+            }
+        }
         return maxProb;
     }
 }

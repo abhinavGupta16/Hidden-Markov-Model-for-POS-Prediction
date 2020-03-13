@@ -1,5 +1,7 @@
 package Assignment4;
 
+import Assignment4.Files.Patterns;
+
 import java.io.*;
 import java.util.*;
 
@@ -15,10 +17,13 @@ public class TrainHmm {
     public static String NUMBER_WORD_PATTERN = "([a-zA-Z]*)?(\\-?)[-+]?[0-9](\\:?)(\\-?)[0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
     public static String NUMBER_HYPEN_WORD_PATTERN = "[0-9]*(\\-)[a-zA-Z]([a-zA-Z]*(\\-)*[a-zA-Z]*)*";
     public static String NUMBER_WORD_HYPHEN_PATTERN = "([a-zA-Z]*)(\\-)[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*(\\-)?([a-zA-Z])*";
-    public static String ED_WORD_PATTERN = ".*ed";
+
+
+
 
     public Map<String,Integer> stateIndexMap;
     public Map<String,Integer> wordIndexMap;
+    public Map<String,Integer> suffixIndexMap;
     public double[][] wordState;
     public double[][] stateState;
     public double[][] suffixState;
@@ -26,9 +31,12 @@ public class TrainHmm {
     public TrainHmm(){
         this.stateIndexMap = new LinkedHashMap<>();
         this.wordIndexMap = new LinkedHashMap<>();
+        this.suffixIndexMap = new LinkedHashMap<>();
         this.stateIndexMap.put(START, 1);
         this.stateIndexMap.put(END, 2);
-    }
+
+        Patterns.getPrefixIndex(this.suffixIndexMap);
+     }
 
     public static void main(String[] args) throws Exception{
         TrainHmm trainHmm = new TrainHmm();
@@ -74,6 +82,9 @@ public class TrainHmm {
                     stateIndexTo = trainHmm.stateIndexMap.get(tag);
                     prevState = tag;
                 }
+                int suffixIndex = trainHmm.suffixIndexMap.get(Patterns.getPrefix(word));
+                trainHmm.suffixState[suffixIndex][stateIndexTo]++;
+
                 trainHmm.stateState[stateIndexFrom][0]++;
                 trainHmm.wordState[wordIndex][stateIndexTo]++;
                 trainHmm.stateState[stateIndexFrom][stateIndexTo]++;
@@ -95,14 +106,15 @@ public class TrainHmm {
 
         trainHmm.calculateProbabilityState();
         trainHmm.calculateProbabilityWord();
-//
+
 //        System.out.println(trainHmm.stateState[trainHmm.stateIndexMap.get(".")][2]);
 //        System.out.println("wordState");
 //        print2DArray(wordState, trainHmm.wordIndexMap, trainHmm.stateIndexMap);
 //        System.out.println("trainHmm.stateState");
 //        print2DArray(trainHmm.stateState, trainHmm.stateIndexMap, trainHmm.stateIndexMap);
-        File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.words");
-        File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos");
+
+        File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_23.words");
+        File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\wsj_23.pos");
         trainHmm.processFile(fileTest, filePos);
 
         System.out.println("Score");
@@ -146,6 +158,9 @@ public class TrainHmm {
             int stateIndex = entry.getValue();
             for(int i = 0; i < wordState.length; i++){
                 wordState[i][stateIndex] = wordState[i][stateIndex]/stateState[stateIndex][0];
+            }
+            for(int i = 0; i < suffixState.length; i++){
+                suffixState[i][stateIndex] = suffixState[i][stateIndex]/stateState[stateIndex][0];
             }
         }
     }
