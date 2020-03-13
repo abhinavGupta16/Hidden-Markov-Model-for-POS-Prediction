@@ -42,11 +42,11 @@ public class Veterbi {
 
         File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test.words");
         File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos");
-        TrainHmm.processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos, stateMax);
+//        TrainHmm.processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos);
     }
 
-    public static String[] viterbi(double[][] stateState, double[][] wordState, Map<String,Integer> stateIndexMap, Map<String,Integer> wordIndexMap, String[] obs, double[] stateMax){
-        Pair[][] v = new Pair[stateState.length][obs.length+2];
+    public static String[] viterbi(TrainHmm trainHmm, String[] obs){
+        Pair[][] v = new Pair[trainHmm.stateState.length][obs.length+2];
         for(int i = 0; i<v.length; i++){
             for(int j = 0; j < v[0].length;j++){
                 v[i][j] = new Pair(0,null);
@@ -56,17 +56,17 @@ public class Veterbi {
         v[1][0].value = 1;
         for(int wordIndex = 1; wordIndex <= obs.length; wordIndex++){
             String word = getWord(obs[wordIndex-1]);
-            for(int stateIndex = 1; stateIndex < stateState[0].length; stateIndex++){
+            for(int stateIndex = 1; stateIndex < trainHmm.stateState[0].length; stateIndex++){
                 double maxProb = -1;
                 Integer maxStateIndex = -1;
-                for(int prevStateIndex = 1; prevStateIndex < stateState[0].length; prevStateIndex++){
+                for(int prevStateIndex = 1; prevStateIndex < trainHmm.stateState[0].length; prevStateIndex++){
                     double wordProb;
-                    if(!wordIndexMap.containsKey(word)){
-                        wordProb = wordNotFoundState(stateState, prevStateIndex, stateIndex, word, stateIndexMap, wordIndexMap, wordState);//stateMax[stateIndex]; //wordNotFound(wordState, stateIndex);
+                    if(!trainHmm.wordIndexMap.containsKey(word)){
+                        wordProb = wordNotFoundState(trainHmm, prevStateIndex, stateIndex, word);//stateMax[stateIndex]; //wordNotFound(wordState, stateIndex);
                     } else {
-                        wordProb = wordState[wordIndexMap.get(word)][stateIndex];
+                        wordProb = trainHmm.wordState[trainHmm.wordIndexMap.get(word)][stateIndex];
                     }
-                    double prob = stateState[prevStateIndex][stateIndex] * wordProb
+                    double prob = trainHmm.stateState[prevStateIndex][stateIndex] * wordProb
                             * v[prevStateIndex][wordIndex-1].value;
 
                     if(prob>maxProb){
@@ -79,11 +79,11 @@ public class Veterbi {
             }
         }
 
-        int endStateIndex = stateIndexMap.get("End");
+        int endStateIndex = trainHmm.stateIndexMap.get("End");
         double maxProb = -1;
         Integer maxStateIndex = -1;
-        for (int prevStateIndex = 1; prevStateIndex < stateState[0].length; prevStateIndex++) {
-            double prob = stateState[prevStateIndex][endStateIndex] * v[prevStateIndex][obs.length].value;
+        for (int prevStateIndex = 1; prevStateIndex < trainHmm.stateState[0].length; prevStateIndex++) {
+            double prob = trainHmm.stateState[prevStateIndex][endStateIndex] * v[prevStateIndex][obs.length].value;
             if (prob > maxProb) {
                 maxProb = prob;
                 maxStateIndex = prevStateIndex;
@@ -98,11 +98,11 @@ public class Veterbi {
 //        System.out.println();
         String[] tags = new String[obs.length];
         int val = obs.length-1;
-        Pair current = v[stateIndexMap.get("End")][obs.length+1];
+        Pair current = v[trainHmm.stateIndexMap.get("End")][obs.length+1];
         int n = obs.length+1;
         while(true){
             if(val>=0)
-                tags[val] = TrainHmm.getKeyByValue(stateIndexMap, current.prev);
+                tags[val] = TrainHmm.getKeyByValue(trainHmm.stateIndexMap, current.prev);
             val--;
             n--;
             if(current.prev==null){
@@ -110,12 +110,12 @@ public class Veterbi {
             }
             current = v[current.prev][n];
         }
-        handleSpecialWords(obs, tags, wordIndexMap, stateIndexMap, stateState);
+        handleSpecialWords(obs, tags, trainHmm);
 //        System.out.println(Arrays.toString(tags));
         return tags;
     }
 
-    public static void handleSpecialWords(String[] obs, String[] tags, Map<String, Integer> wordIndexMap, Map<String, Integer> stateIndexMap, double[][] stateState){
+    public static void handleSpecialWords(String[] obs, String[] tags, TrainHmm trainHmm){
 //        String pattern = "([a-zA-Z]*)?(\\-?)[-+]?[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*([a-zA-Z]?)";
 //        if(obs[0].matches(pattern)){
 //            tags[0] ="CD";
@@ -124,7 +124,7 @@ public class Veterbi {
 //            if(obs[i].matches(pattern)){
 //                tags[i] ="CD"; // String with numbers, comma separated or . separated are most likely CD
 //            } else
-                if(!wordIndexMap.containsKey(obs[i]) && Character.isUpperCase(obs[i].charAt(0))){
+                if(!trainHmm.wordIndexMap.containsKey(obs[i]) && Character.isUpperCase(obs[i].charAt(0))){
 //                    if(obs[i].charAt(obs[i].length()-1) == 's'){
 //                        tags[i] = "NNPS";
 //                    } else {
@@ -132,12 +132,12 @@ public class Veterbi {
 //                    }
                 } else if((!obs[i].equals(",") && tags[i]==",") || (!obs[i].equals("(") && tags[i]=="(")
                         || (!obs[i].equals(")") && tags[i]==")") || (!obs[i].equals("\'\'") && tags[i]=="\'\'")){
-                    int stateIndexFrom = stateIndexMap.get(tags[i-1]);
+                    int stateIndexFrom = trainHmm.stateIndexMap.get(tags[i-1]);
                     double maxProb = -1;
-                    for (int stateIndexTo = 1; stateIndexTo < stateState[0].length; stateIndexTo++) {
-                        if (stateState[stateIndexFrom][stateIndexTo] > maxProb) {
-                            maxProb = stateState[stateIndexFrom][stateIndexTo];
-                            tags[i] = TrainHmm.getKeyByValue(stateIndexMap, stateIndexTo);
+                    for (int stateIndexTo = 1; stateIndexTo < trainHmm.stateState[0].length; stateIndexTo++) {
+                        if (trainHmm.stateState[stateIndexFrom][stateIndexTo] > maxProb) {
+                            maxProb = trainHmm.stateState[stateIndexFrom][stateIndexTo];
+                            tags[i] = TrainHmm.getKeyByValue(trainHmm.stateIndexMap, stateIndexTo);
                         }
                     }
                 }
@@ -154,8 +154,7 @@ public class Veterbi {
         return maxProb;
     }
 
-    public static double wordNotFoundState(double[][] stateState, int stateIndexFrom, int stateIndex, String word, Map<String,Integer> stateIndexMap,
-            Map<String,Integer> wordIndexMap, double[][] wordState){
+    public static double wordNotFoundState(TrainHmm trainHmm, int stateIndexFrom, int stateIndex, String word){
         double maxProb = -1.0;
 
 //        if(word.matches(NUMBER_WORD_PATTERN)) {
@@ -163,12 +162,12 @@ public class Veterbi {
 //        } else if(word.matches(NUMBER_WORD_HYPHEN_PATTERN)) {
 //            maxProb = wordState[wordIndexMap.get(NUMBER_WORD_HYPHEN)][stateIndex];
 //        } else
-            if(word.matches(ED_WORD_PATTERN) && stateIndex == stateIndexMap.get("VBD")) {
+            if(word.matches(ED_WORD_PATTERN) && stateIndex == trainHmm.stateIndexMap.get("VBD")) {
                 maxProb = 1;
             } else {
-                for (int stateIndexTo = 0; stateIndexTo < stateState[0].length; stateIndexTo++) {
-                    if (stateState[stateIndexFrom][stateIndexTo] > maxProb) {
-                        maxProb = stateState[stateIndexFrom][stateIndexTo];
+                for (int stateIndexTo = 0; stateIndexTo < trainHmm.stateState[0].length; stateIndexTo++) {
+                    if (trainHmm.stateState[stateIndexFrom][stateIndexTo] > maxProb) {
+                        maxProb = trainHmm.stateState[stateIndexFrom][stateIndexTo];
                     }
                 }
             }

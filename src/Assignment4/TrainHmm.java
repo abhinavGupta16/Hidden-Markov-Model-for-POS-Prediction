@@ -17,11 +17,21 @@ public class TrainHmm {
     public static String NUMBER_WORD_HYPHEN_PATTERN = "([a-zA-Z]*)(\\-)[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*(\\-)?([a-zA-Z])*";
     public static String ED_WORD_PATTERN = ".*ed";
 
+    public Map<String,Integer> stateIndexMap;
+    public Map<String,Integer> wordIndexMap;
+    public double[][] wordState;
+    public double[][] stateState;
+    public double[][] suffixState;
+
+    public TrainHmm(){
+        this.stateIndexMap = new LinkedHashMap<>();
+        this.wordIndexMap = new LinkedHashMap<>();
+        this.stateIndexMap.put(START, 1);
+        this.stateIndexMap.put(END, 2);
+    }
+
     public static void main(String[] args) throws Exception{
-        Map<String,Integer> stateIndexMap = new LinkedHashMap<>();
-        Map<String,Integer> wordIndexMap = new LinkedHashMap<>();
-        stateIndexMap.put(START, 1);
-        stateIndexMap.put(END, 2);
+        TrainHmm trainHmm = new TrainHmm();
         File file = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_02-21.pos");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
@@ -33,18 +43,18 @@ public class TrainHmm {
                 temp = line.split("\t");
                 String word = getWord(temp[0]);
                 String tag = temp[1];
-                if(!wordIndexMap.containsKey(word)){
-                    wordIndexMap.put(word, wordIndex++);
+                if(!trainHmm.wordIndexMap.containsKey(word)){
+                    trainHmm.wordIndexMap.put(word, wordIndex++);
                 }
-                if(!stateIndexMap.containsKey(tag)){
-                    stateIndexMap.put(tag, stateIndex++);
+                if(!trainHmm.stateIndexMap.containsKey(tag)){
+                    trainHmm.stateIndexMap.put(tag, stateIndex++);
                 }
             }
         }
 
-        double[][] wordState = new double[wordIndexMap.size()][stateIndexMap.size()+1];
-        double[][] stateState = new double[stateIndexMap.size()+1][stateIndexMap.size()+1];
-        double[] stateMax = new double[stateIndexMap.size()+1];
+        trainHmm.wordState = new double[trainHmm.wordIndexMap.size()][trainHmm.stateIndexMap.size()+1];
+        trainHmm.stateState = new double[trainHmm.stateIndexMap.size()+1][trainHmm.stateIndexMap.size()+1];
+        trainHmm.suffixState = new double[trainHmm.wordIndexMap.size()][trainHmm.stateIndexMap.size()+1];
 
         br = new BufferedReader(new FileReader(file));
         int stateIndexFrom = 0;
@@ -56,44 +66,44 @@ public class TrainHmm {
                 temp = line.split("\t");
                 String word = getWord(temp[0]);
                 String tag = temp[1];
-                if(wordIndexMap.containsKey(word)){
-                    wordIndex = wordIndexMap.get(word);
+                if(trainHmm.wordIndexMap.containsKey(word)){
+                    wordIndex = trainHmm.wordIndexMap.get(word);
                 }
-                if(stateIndexMap.containsKey(tag)) {
-                    stateIndexFrom = stateIndexMap.get(prevState);
-                    stateIndexTo = stateIndexMap.get(tag);
+                if(trainHmm.stateIndexMap.containsKey(tag)) {
+                    stateIndexFrom = trainHmm.stateIndexMap.get(prevState);
+                    stateIndexTo = trainHmm.stateIndexMap.get(tag);
                     prevState = tag;
                 }
-                stateState[stateIndexFrom][0]++;
-                wordState[wordIndex][stateIndexTo]++;
-                stateState[stateIndexFrom][stateIndexTo]++;
+                trainHmm.stateState[stateIndexFrom][0]++;
+                trainHmm.wordState[wordIndex][stateIndexTo]++;
+                trainHmm.stateState[stateIndexFrom][stateIndexTo]++;
             } else if(prevState!=START){
-                stateIndexFrom = stateIndexMap.get(prevState);
-                stateIndexTo = stateIndexMap.get(END);
+                stateIndexFrom = trainHmm.stateIndexMap.get(prevState);
+                stateIndexTo = trainHmm.stateIndexMap.get(END);
                 prevState = START;
-                stateState[stateIndexFrom][0]++;
-                stateState[stateIndexFrom][stateIndexTo]++;
+                trainHmm.stateState[stateIndexFrom][0]++;
+                trainHmm.stateState[stateIndexFrom][stateIndexTo]++;
             }
         }
 
 //        System.out.println("wordState");
-//        print2DArray(wordState, wordIndexMap, stateIndexMap);
-//        System.out.println("stateState");
-//        print2DArray(stateState, stateIndexMap, stateIndexMap);
-//        System.out.println(wordIndexMap);
-//        System.out.println(stateIndexMap);
+//        print2DArray(wordState, trainHmm.wordIndexMap, trainHmm.stateIndexMap);
+//        System.out.println("trainHmm.stateState");
+//        print2DArray(trainHmm.stateState, trainHmm.stateIndexMap, trainHmm.stateIndexMap);
+//        System.out.println(trainHmm.wordIndexMap);
+//        System.out.println(trainHmm.stateIndexMap);
 
-        calculateProbabilityState(stateState);
-        calculateProbabilityWord(stateState, wordState, stateIndexMap, stateMax);
+        trainHmm.calculateProbabilityState();
+        trainHmm.calculateProbabilityWord();
 //
-//        System.out.println(stateState[stateIndexMap.get(".")][2]);
+//        System.out.println(trainHmm.stateState[trainHmm.stateIndexMap.get(".")][2]);
 //        System.out.println("wordState");
-//        print2DArray(wordState, wordIndexMap, stateIndexMap);
-//        System.out.println("stateState");
-//        print2DArray(stateState, stateIndexMap, stateIndexMap);
+//        print2DArray(wordState, trainHmm.wordIndexMap, trainHmm.stateIndexMap);
+//        System.out.println("trainHmm.stateState");
+//        print2DArray(trainHmm.stateState, trainHmm.stateIndexMap, trainHmm.stateIndexMap);
         File fileTest = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.words");
         File filePos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\test_generate.pos");
-        processFile(stateState, wordState, stateIndexMap, wordIndexMap, fileTest, filePos, stateMax);
+        trainHmm.processFile(fileTest, filePos);
 
         System.out.println("Score");
         Score.main(new String[]{"D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.pos", filePos.getPath()});
@@ -101,8 +111,7 @@ public class TrainHmm {
         ScoreCustom.main(new String[]{"D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Assignment4\\Files\\WSJ_24.pos", filePos.getPath()});
     }
 
-    public static void processFile(double[][] stateState, double[][] wordState, Map<String,Integer> stateIndexMap,
-                                   Map<String,Integer> wordIndexMap, File fileKey, File filePos, double[] stateMax) throws Exception{
+    public void processFile(File fileKey, File filePos) throws Exception{
 
         BufferedReader br = new BufferedReader(new FileReader(fileKey));
         BufferedWriter brw = new BufferedWriter(new FileWriter(filePos));
@@ -114,7 +123,7 @@ public class TrainHmm {
             } else {
                 String[] obsArr = obs.stream().toArray(String[] ::new);
                 obs = new LinkedList<>();
-                String[] tags = Veterbi.viterbi(stateState, wordState, stateIndexMap, wordIndexMap, obsArr, stateMax);
+                String[] tags = Veterbi.viterbi(this, obsArr);
                 for(int i = 0; i < tags.length; i++){
                     brw.write(obsArr[i] + "\t" + tags[i] + "\n");
                 }
@@ -124,7 +133,7 @@ public class TrainHmm {
         brw.close();
     }
 
-    public static void calculateProbabilityState(double[][] stateState){
+    public void calculateProbabilityState(){
         for(int i = 1; i < stateState.length; i++){
             for(int j = 1; j < stateState[0].length; j++){
                 stateState[i][j] = stateState[i][j]/stateState[i][0];
@@ -132,14 +141,11 @@ public class TrainHmm {
         }
     }
 
-    public static void calculateProbabilityWord(double[][] stateState, double[][] wordState, Map<String,Integer> stateIndexMap, double[] stateMax){
+    public void calculateProbabilityWord(){
         for(Map.Entry<String, Integer> entry: stateIndexMap.entrySet()){
             int stateIndex = entry.getValue();
             for(int i = 0; i < wordState.length; i++){
                 wordState[i][stateIndex] = wordState[i][stateIndex]/stateState[stateIndex][0];
-            }
-            if(stateMax[stateIndex] < wordState[stateIndex][stateIndex]){
-                stateMax[stateIndex] = wordState[stateIndex][stateIndex];
             }
         }
     }
