@@ -14,7 +14,7 @@ public class TrainHmm {
     public static String NUMBER_HYPEN_WORD_PATTERN = "[0-9]*(\\-)[a-zA-Z]([a-zA-Z]*(\\-)*[a-zA-Z]*)*";
     public static String NUMBER_WORD_HYPHEN_PATTERN = "([a-zA-Z]*)(\\-)[0-9][0-9]*(,[0-9][0-9]*)*?(\\.[0-9]*)*(\\-)?([a-zA-Z])*";
 
-    public static String BASE_DIR = "C:\\Datadrive\\NYU_assignment\\Spring_2020\\NLP\\Assignment4\\NLP\\src\\Files\\";
+    public static String BASE_DIR = "src/Files/";
 
     public Map<String,Integer> stateIndexMap;
     public Map<String,Integer> wordIndexMap;

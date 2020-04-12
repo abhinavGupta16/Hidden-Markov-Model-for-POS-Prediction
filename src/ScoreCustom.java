@@ -31,7 +31,7 @@ public class ScoreCustom {
         }
         int correct = 0;
         int incorrect = 0;
-        File fileMismatchPos = new File("D:\\NYU_assignment\\Spring_2020\\NLP\\NLP\\src\\Files\\test_mismatch.pos");
+        File fileMismatchPos = new File("src/Files/test_mismatch.pos");
         BufferedWriter fileMismatchPosBr = new BufferedWriter(new FileWriter(fileMismatchPos));
         for (int i = 0; i < key.size(); i++) {
             String keyLine = key.get(i).trim();
